@@ -76,13 +76,15 @@ def find_common_subsequence(tokenized_list):
     return token_dict
 
 def to_csv(token_dict):
-	csv_dict = {"score": [], "count": [], "tokens": []}
+	csv_dict = {"score": [], "tokens": [], "count": [], "sourcecode": []}
 	for token_value, token_details in token_dict.items():
-		csv_dict["tokens"].append(token_value)
+		csv_dict["tokens"].append(token_details[1])
 		csv_dict["count"].append(token_details[0])
 		score = math.log(token_details[0], 2) * math.log(token_details[1], 2)
 		csv_dict["score"].append(score)
+		csv_dict["sourcecode"].append(token_value)
 	df = pd.DataFrame(csv_dict)
+	df.sort_values(by='score', ascending=False, inplace=True)
 	df.to_csv('data.csv', index=None)
 
 def say_hello():
